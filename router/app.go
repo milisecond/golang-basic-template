@@ -9,5 +9,7 @@ func App() {
 	controller := controller.NewExampleController()
 
 	http.HandleFunc("/", controller.Index)
-	http.HandleFunc("/person", controller.Store)
+	http.HandleFunc("/body", controller.Store)
+	http.HandleFunc("/query", controller.Find)
+	http.HandleFunc("/multipart", controller.Multipart)
 }
