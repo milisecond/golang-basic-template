@@ -2,6 +2,8 @@ package controller
 
 import (
 	"encoding/json"
+	"golang-basic-http/model/request"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -38,17 +40,20 @@ func (e ExampleControllerImpl) Store(w http.ResponseWriter, r *http.Request) {
 	message := "Oops the method is doesn exist"
 	switch r.Method {
 	case "POST":
-		var response map[string]interface{}
+		var exampleModel request.ExampleRequest
+		bodyReq, err := ioutil.ReadAll(r.Body)
 
-		response = map[string]interface{}{
+		json.Unmarshal(bodyReq, &exampleModel)
+
+		response := map[string]interface{}{
 			"success": true,
 			"message": "Ok",
-			"data":    []string{},
+			"data":    exampleModel,
 		}
 
 		w.WriteHeader(200)
 
-		err := json.NewEncoder(w).Encode(response)
+		err = json.NewEncoder(w).Encode(response)
 		if err != nil {
 			panic(err)
 		}
